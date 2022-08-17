@@ -9,6 +9,10 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.get('/', (_req, res) => {
+  return res.status(200).send({ message: 'Fullstack Challenge 🏅 - Dictionary' });
+});
+
 // app.use('/api', router);
 
 // app.use((err, _req, res, _next) => {
