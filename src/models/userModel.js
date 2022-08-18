@@ -1,4 +1,5 @@
 const con = require('./connections');
+const { ObjectId } = require('mongodb');
 
 const loginSearch = async (email) => {
   const db = await con();
@@ -6,9 +7,9 @@ const loginSearch = async (email) => {
   return user;
 };
 
-const userSeach = async (name, email) => {
+const userSeach = async (id) => {
   const db = await con();
-  const user = await db.collection('user').findOne({ name, email });
+  const user = await db.collection('user').findOne({ _id: ObjectId(id) });
   return user;
 };
 

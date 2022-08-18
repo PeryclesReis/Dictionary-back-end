@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/auth/singin', rescue(userControllers.login));
 router.post('/auth/singup', rescue(userControllers.registerUser));
 
-// router.post('/user/me', rescue());
+router.get('/user/me', rescue(userControllers.profile));
 // router.post('/user/me/history', rescue());
 // router.post('/user/me/favorites', rescue());
 

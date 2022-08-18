@@ -5,7 +5,9 @@ const {
   HTTP_UNAUTHORIZED,
   HTTP_BAD_REQUEST,
   HTTP_CONFLICT,
-  HTTP_CREATED, HTTP_OK
+  HTTP_CREATED,
+  HTTP_OK,
+  HTTP_NOT_FOUND
 } = require('../utils');
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -73,8 +75,26 @@ const loginUser = async (email, password) => {
   };
 };
 
+const getUser = async (id) => {
+  const profile = await userModel.userSeach(id);
+
+  if (!profile) {
+    return {
+      error: true,
+      code: HTTP_NOT_FOUND,
+      message: 'Usuário não encontrado!',
+    };
+  }
+
+  return {
+    code: HTTP_OK,
+    user: profile
+  };
+};
+
 module.exports = {
   registerUser,
   loginUser,
-  existsUser
+  existsUser,
+  getUser
 };

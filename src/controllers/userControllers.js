@@ -33,7 +33,23 @@ const login = async (req, res) => {
   });
 };
 
+const profile = async (req, res) => {
+  const { id } = req.body;
+  const result = await userServices.getUser(id);
+
+  if(result.error) {
+    return res.status(result.code).json({ message: result.message });
+  }
+
+  return res.status(result.code).json({
+    name: result.user.name,
+    email: result.user.email,
+    message: 'Usuário encontrado com sucesso!'
+  });
+};
+
 module.exports = {
   login,
-  registerUser
+  registerUser,
+  profile
 };
