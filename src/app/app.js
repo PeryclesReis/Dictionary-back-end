@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-// const router = require('../routes');
+const router = require('../routes');
 const cors = require('cors');
 
 const app = express();
@@ -13,7 +13,7 @@ app.get('/', (_req, res) => {
   return res.status(200).send({ message: 'Fullstack Challenge 🏅 - Dictionary' });
 });
 
-// app.use('/api', router);
+app.use('/', router);
 
 // app.use((err, _req, res, _next) => {
 //   console.log(err.message);
