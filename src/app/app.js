@@ -15,9 +15,9 @@ app.get('/', (_req, res) => {
 
 app.use('/', router);
 
-// app.use((err, _req, res, _next) => {
-//   console.log(err.message);
-//   return res.status(500).json({ message: 'Deu ruim alguma coisa aqui!'});
-// });
+app.use((err, _req, res, _next) => {
+  console.log(err.message);
+  return res.status(500).json({ message: 'Deu ruim alguma coisa aqui!'});
+});
 
 module.exports = app;
