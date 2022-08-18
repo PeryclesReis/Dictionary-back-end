@@ -16,7 +16,7 @@ const register = async (name, email, password) => {
   const db = await con();
   const newUser = await db
     .collection('user').insertOne({ name, email, password });
-  return newUser.ops[0];
+  return newUser;
 };
 
 const updateUser = async (name, email, newName, newEmail) => {
