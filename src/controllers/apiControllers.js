@@ -8,6 +8,12 @@ const words = async (req, res) => {
   return res.status(200).json({ response });
 }
 
+const dictionary = async (_req, res) => {
+  const response = await apiExternalController.dictionary();
+  return res.status(200).json({ response });
+};
+
 module.exports = {
-  words
+  words,
+  dictionary
 };

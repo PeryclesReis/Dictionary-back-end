@@ -1,3 +1,4 @@
+const con = require('./connections');
 const axios = require('axios');
 
 const words = async (word) => {
@@ -7,6 +8,22 @@ const words = async (word) => {
   return data;
 }
 
+const wordsList = async () => {
+  const db = await con();
+  const words = await db
+    .collection('dictionary').find().toArray();
+  return words;
+};
+
+const insertWordsList = async (words) => {
+  const db = await con();
+  const dictionary = await db
+    .collection('dictionary').insertOne({ words });
+  return dictionary;
+};
+
 module.exports =  {
-  words
+  words,
+  insertWordsList,
+  wordsList
 };
