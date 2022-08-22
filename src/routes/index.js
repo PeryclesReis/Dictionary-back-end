@@ -1,5 +1,5 @@
 const express = require('express');
-const auth = require('../routes/auth');
+const auth = require('../routes/login');
 const user = require('../routes/user');
 const words = require('../routes/words');
 

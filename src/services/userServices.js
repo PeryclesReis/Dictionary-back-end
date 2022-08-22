@@ -1,52 +1,15 @@
-const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
-const validaUser = require('../middlewares/validateUser');
+const createToken = require('../auth');
 const {
   HTTP_UNAUTHORIZED,
-  HTTP_BAD_REQUEST,
-  HTTP_CONFLICT,
   HTTP_CREATED,
   HTTP_OK,
   HTTP_NOT_FOUND
 } = require('../utils');
-const JWT_SECRET = process.env.JWT_SECRET;
-
-const createToken = (email, password) => {
-  const jwtConfig = { expiresIn: '7d' };
-  const payload = { email, password };
-
-  const token = jwt.sign(payload, JWT_SECRET, jwtConfig);
-  return token;
-};
-
-const existsUser = async (body) => {
-  const { name, email } = body;
-  const { error } = validaUser.validateUser(body);
-
-  if (error) {
-    return {
-      error: true,
-      code: HTTP_BAD_REQUEST,
-      message: 'Dados incorretos!',
-    };
-  }
-
-  const userAlreadyRegister = await userModel.userSeach(name, email);
-  if (userAlreadyRegister) {
-    return {
-      error: {
-        code: HTTP_BAD_REQUEST,
-        message: 'Usuário já existe!',
-      }
-    };
-  }
-  return '';
-}
 
 const registerUser = async (name, email, password) => {
   const newUser = await userModel.register(name, email, password);
-
-  const token = createToken(email, password);
+  const token = await createToken.generateToken(name, email, newUser.insertedId);
 
   return {
     code: HTTP_CREATED,
@@ -67,7 +30,8 @@ const loginUser = async (email, password) => {
 
   const { password: _, ...usuario } = userAlreadyRegister;
 
-  const token = createToken(email, password);
+  const token = createToken.generateToken(usuario.name, usuario.email, usuario._id);
+
   return {
     code: HTTP_OK,
     token,
@@ -95,6 +59,5 @@ const getUser = async (id) => {
 module.exports = {
   registerUser,
   loginUser,
-  existsUser,
   getUser
 };

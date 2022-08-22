@@ -7,9 +7,9 @@ const loginSearch = async (email) => {
   return user;
 };
 
-const userSeach = async (id) => {
+const userSeach = async (name, email) => {
   const db = await con();
-  const user = await db.collection('user').findOne({ _id: ObjectId(id) });
+  const user = await db.collection('user').findOne({ name, email });
   return user;
 };
 
@@ -28,6 +28,12 @@ const updateUser = async (name, email, newName, newEmail) => {
   const user = await buscaUsuario(newName, newEmail);
   return user;
 };
+
+const listFavorite = async (id, word) => {
+  const db = await con();
+  const user = await db.collection('user').insertOne({ _id: ObjectId(id) }, { $set: { favoriteWords: [] } });
+  return user;
+}
 
 module.exports = {
   loginSearch,
