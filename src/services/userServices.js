@@ -1,4 +1,5 @@
 const userModel = require('../models/userModel');
+// const favoriteModel = require('../models/favoriteWord');
 const createToken = require('../auth');
 const {
   HTTP_UNAUTHORIZED,
@@ -40,7 +41,7 @@ const loginUser = async (email, password) => {
 };
 
 const getUser = async (id) => {
-  const profile = await userModel.userSeach(id);
+  const profile = await userModel.userSeachById(id);
 
   if (!profile) {
     return {
@@ -56,8 +57,51 @@ const getUser = async (id) => {
   };
 };
 
+const addWord = async (id, word) => {
+  const { favorites } = await userModel.userSeachById(id);
+  const date = "12/12/2022";
+
+  if (!favorites) {
+    return userModel.createFavorite(id, date, word);
+  }
+
+  const existWord = favorites.some((elem) => elem.word === word);
+
+  if (favorites && !existWord) {
+    return userModel.addWord(id, date, word);
+  }
+
+  return;
+};
+
+const favoriteWords = async (id) => {
+  const result = await userModel.userSeachById(id);
+  return result.favorites;
+};
+
+const removeWord = async (id, word) => {
+  const { favorites } = await userModel.userSeachById(id);
+
+  if (!favorites) {
+    return {
+      error: true,
+      code: HTTP_NOT_FOUND,
+      message: 'Não possui palavra favorita ou já foi desfavoritada!',
+    };
+  }
+
+  const existWord = favorites.some((elem) => elem.word === word);
+
+  if (favorites && existWord) {
+    return userModel.removeWord(id, word);
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
-  getUser
+  getUser,
+  addWord,
+  favoriteWords,
+  removeWord
 };

@@ -14,8 +14,8 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/auth', router);
-app.use('/user', router);
-app.use('/entries', router);
+app.use('/user/me', router);
+app.use('/entries/en', router);
 
 app.use((err, _req, res, _next) => {
   console.log(err.message);

@@ -1,15 +1,14 @@
 const express = require('express');
 const rescue = require('express-rescue');
 const apiExternalController = require('../controllers/apiControllers');
+const userController = require('../controllers/userControllers');
 const downloadWords = require('../middlewares/downloadWords');
 
 const router = express.Router();
 
-router.get('/en', downloadWords, rescue(apiExternalController.dictionary));
-router.get('/en/:word', rescue(apiExternalController.words));
-// Salva a palavra na lista de favoritas (retorno opcional)
-// router.post('/en/:word/favorite', rescue());
-// Remover a palavra da lista de favoritas (retorno opcional)
-// router.delete('/en/:word/unfavorite', rescue(apiExternalController));
+router.get('/', downloadWords, rescue(apiExternalController.dictionary));
+router.get('/:word', rescue(apiExternalController.words));
+router.post('/:word/favorite', rescue(userController.addWord));
+router.delete('/:word/unfavorite', rescue(userController.removeWord));
 
 module.exports = router;
