@@ -4,7 +4,7 @@ const {
   HTTP_BAD_REQUEST,
 } = require('../utils');
 
-const validateUser = async (req, _res, next) => {
+const validateUser = async (req, res, next) => {
   const { error } = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().required().email(),
@@ -23,13 +23,9 @@ const validateUser = async (req, _res, next) => {
 
   const userAlreadyRegister = await userModel.userSeach(name, email);
   if (userAlreadyRegister) {
-    return {
-      error: {
-        code: HTTP_BAD_REQUEST,
-        message: 'Usuário já existe!',
-      }
-    };
+    return res.status(HTTP_BAD_REQUEST).json({ message: 'Usuário já existe!' });
   }
+
   next();
 }
 
