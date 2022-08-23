@@ -6,8 +6,8 @@ const downloadWords = require('../middlewares/downloadWords');
 
 const router = express.Router();
 
-router.get('/', downloadWords, rescue(apiExternalController.dictionary));
 router.get('/:word', rescue(apiExternalController.words));
+router.post('/', downloadWords, rescue(apiExternalController.dictionary));
 router.post('/:word/favorite', rescue(userController.addWord));
 router.delete('/:word/unfavorite', rescue(userController.removeWord));
 
