@@ -1,13 +1,14 @@
 const express = require('express');
 const rescue = require('express-rescue');
+const auth = require('../middlewares/auth');
 const userControllers = require('../controllers/userControllers');
 
 const router = express.Router();
 
-router.get('/me', rescue(userControllers.profile));
+router.get('/', rescue(userControllers.profile));
 // Retornar a lista de palavras visitadas
-// router.post('/me/history', rescue());
+router.get('/history', rescue());
 // Retornar a lista de palavras marcadas como favoritas
-// router.post('/me/favorites', rescue());
+router.get('/favorites', auth, rescue(userControllers.wordFavorites));
 
 module.exports = router;
